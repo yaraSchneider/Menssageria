@@ -1,0 +1,10 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: pedidos-rabbitmq
+    ports:
+      - "5672:5672"      # porta AMQP
+      - "15672:15672"    # porta do RabbitMQ Management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest

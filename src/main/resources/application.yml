@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: sistema-pedidos-rabbitmq
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        # ack automatico: sucesso = ack; excecao = nack/retry
+        acknowledge-mode: auto
+        # mensagens rejeitadas nao retornam a fila (vao para a DLQ)
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          # limite de tentativas configuravel (Req 7.5)
+          max-attempts: 3
+          initial-interval: 1000ms
+
+server:
+  port: 8080
