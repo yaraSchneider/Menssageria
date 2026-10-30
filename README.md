@@ -32,6 +32,19 @@ Cliente -> POST /pedidos -> PedidoController -> PedidoService -> PedidoRepositor
                                        pedidos.dlx (DLX) -> pedidos.dlq (DLQ)
 ```
 
+## Demonstração
+
+A gravação mostra o preenchimento e a publicação de um pedido de exemplo com dois produtos, seguido da consulta dos dados pelo painel.
+
+<video controls preload="metadata" width="100%">
+  <source src="./docs/demo-pedidos.webm" type="video/webm">
+  Seu navegador não oferece suporte a vídeos WebM.
+</video>
+
+[Assistir ou baixar a demonstração (WebM)](./docs/demo-pedidos.webm)
+
+> **Observação:** para gravar esta demonstração, usei uma API local simulada, pois o RabbitMQ não estava disponível no ambiente. O vídeo demonstra o uso da interface e não comprova o processamento real das filas.
+
 ### Topologia do RabbitMQ
 
 | Recurso        | Nome               | Tipo   | Observação                                   |
@@ -79,6 +92,22 @@ mvnw.cmd spring-boot:run
 ```
 
 A aplicação sobe em `http://localhost:8080`. Ao iniciar, o Spring AMQP declara automaticamente a exchange, as filas, a DLX e a DLQ, e os três consumidores passam a escutar suas filas.
+
+### Interface web
+
+Abra `http://localhost:8080` no navegador para usar o painel de pedidos. Nele é possível criar pedidos (com um ou mais itens), consultar um pedido pelo identificador retornado e rever os pedidos criados neste navegador. O histórico é local ao navegador; os pedidos continuam armazenados apenas em memória pela API e são apagados quando a aplicação reinicia.
+
+O painel também mostra as filas para as quais cada evento é roteado. O processamento dos consumidores é simulado e deve ser acompanhado pelos logs da aplicação. Para abrir a interface de gerenciamento do RabbitMQ, use `http://localhost:15672` (usuário e senha `guest`).
+
+### Executar os testes automatizados
+
+Na raiz do projeto, com JDK 17 disponível:
+
+```bash
+mvnw.cmd test
+```
+
+Os testes de serviço não precisam de um RabbitMQ em execução.
 
 ### 3. Parar os serviços
 

@@ -21,6 +21,13 @@ public interface PedidoRepository {
     Pedido salvar(Pedido pedido);
 
     /**
+     * Remove um pedido pelo identificador, sem efeito quando ele nao existe.
+     *
+     * @param id identificador do pedido
+     */
+    void removerPorId(String id);
+
+    /**
      * Busca um pedido pelo seu identificador.
      *
      * @param id identificador do pedido

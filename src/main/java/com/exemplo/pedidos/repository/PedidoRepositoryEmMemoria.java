@@ -26,6 +26,11 @@ public class PedidoRepositoryEmMemoria implements PedidoRepository {
     }
 
     @Override
+    public void removerPorId(String id) {
+        armazenamento.remove(id);
+    }
+
+    @Override
     public Optional<Pedido> buscarPorId(String id) {
         return Optional.ofNullable(armazenamento.get(id));
     }

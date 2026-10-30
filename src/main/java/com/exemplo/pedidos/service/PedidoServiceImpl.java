@@ -1,5 +1,6 @@
 package com.exemplo.pedidos.service;
 
+import com.exemplo.pedidos.exception.PublicacaoEventoException;
 import com.exemplo.pedidos.messaging.EventoPublisher;
 import com.exemplo.pedidos.model.CriarPedidoRequest;
 import com.exemplo.pedidos.model.EventoPedido;
@@ -17,7 +18,8 @@ import java.util.UUID;
  * <p>Orquestra a criacao do pedido: gera um identificador unico (UUID), define
  * o momento de criacao, persiste o pedido via {@link PedidoRepository}, monta o
  * {@link EventoPedido} a partir do pedido salvo e o publica via
- * {@link EventoPublisher}.</p>
+ * {@link EventoPublisher}. Se a publicacao falhar, remove o pedido salvo para
+ * evitar um recurso que a API reportou como nao criado.</p>
  *
  * <p>Requisitos atendidos: 1.1, 1.3, 1.4, 2.1.</p>
  */
@@ -50,7 +52,6 @@ public class PedidoServiceImpl implements PedidoService {
                 request.valorTotal(),
                 dataCriacao
         );
-
         Pedido pedidoSalvo = pedidoRepository.salvar(pedido);
 
         EventoPedido evento = new EventoPedido(
@@ -61,7 +62,12 @@ public class PedidoServiceImpl implements PedidoService {
                 pedidoSalvo.dataCriacao()
         );
 
-        eventoPublisher.publicar(evento);
+        try {
+            eventoPublisher.publicar(evento);
+        } catch (PublicacaoEventoException ex) {
+            pedidoRepository.removerPorId(pedidoSalvo.id());
+            throw ex;
+        }
 
         return pedidoSalvo;
     }
