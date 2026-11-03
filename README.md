@@ -34,7 +34,7 @@ Cliente -> POST /pedidos -> PedidoController -> PedidoService -> PedidoRepositor
 
 ## Demonstração
 
-A gravação mostra o preenchimento e a publicação de um pedido de exemplo com dois produtos, seguido da consulta dos dados pelo painel.
+A gravação (1440x900) mostra o preenchimento e a publicação de um pedido de exemplo com dois produtos (Caneca Esmaltada e Caderno Moleskine), seguido da consulta do pedido pelo identificador retornado no painel.
 
 <video controls preload="metadata" width="100%">
   <source src="./docs/demo-pedidos.webm" type="video/webm">
@@ -42,8 +42,6 @@ A gravação mostra o preenchimento e a publicação de um pedido de exemplo com
 </video>
 
 [Assistir ou baixar a demonstração (WebM)](./docs/demo-pedidos.webm)
-
-> **Observação:** para gravar esta demonstração, usei uma API local simulada, pois o RabbitMQ não estava disponível no ambiente. O vídeo demonstra o uso da interface e não comprova o processamento real das filas.
 
 ### Topologia do RabbitMQ
 
